@@ -1,0 +1,37 @@
+version: "3.4"
+services:
+  reef_node_alice:
+    build:
+      context: https://github.com/reef-defi/reef-chain.git
+    image: reef_node
+    command: --chain=local --tmp --alice --port 30333 --ws-port 9944
+    ports:
+      - 30333:30333
+      - 9944:9944
+    tty: true
+    stdin_open: true
+    networks:
+      - reef-net
+    restart: on-failure
+
+  reef_node_bob:
+    image: reef_node
+    command: --chain=local --tmp --bob --port 30334 --ws-port 9945
+    depends_on:
+      - reef_node_alice
+    ports:
+      - 30334:30334
+      - 9945:9945
+    tty: true
+    stdin_open: true
+    networks:
+      - reef-net
+    restart: on-failure
+
+
+volumes:
+  reef-shared:
+
+networks:
+  reef-net:
+    driver: bridge

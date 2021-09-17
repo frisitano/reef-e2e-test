@@ -1,0 +1,18 @@
+version: "3.4"
+services:
+  hardhat_deploy_flipper:
+    image: hardhat-reef-examples
+    command: npx hardhat run scripts/flipper/deploy.js --show-stack-traces
+    environment:
+      REEF_WS: ws://reef_node_alice:9944
+    tty: true
+    stdin_open: true
+    networks:
+      - reef-net
+
+volumes:
+  reef-shared:
+
+networks:
+  reef-net:
+    driver: bridge
